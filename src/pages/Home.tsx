@@ -10,6 +10,8 @@ import {
   Scissors,
   RefreshCw,
   Plus,
+  TreeDeciduous,
+  CheckCircle2,
 } from "lucide-react";
 import { useState } from "react";
 import AddCatModal from "@/components/AddCatModal";
@@ -25,26 +27,33 @@ export default function Home() {
 
   const toTrapCount = cats.filter((c) => c.status === "to_trap").length;
   const neuteredCount = cats.filter((c) => c.status === "neutered").length;
+  const returnedCount = cats.filter((c) => c.status === "returned").length;
   const totalCount = cats.length;
-  const neuterRate =
-    totalCount > 0 ? Math.round((neuteredCount / totalCount) * 100) : 0;
+  const processedCount = neuteredCount + returnedCount;
+  const tnrRate =
+    totalCount > 0 ? Math.round((processedCount / totalCount) * 100) : 0;
 
   return (
     <div className="min-h-screen cat-paw-pattern">
       <header className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-warm-500/15 via-transparent to-sage-500/10" />
+        <div className="absolute inset-0 bg-gradient-to-br from-warm-500/15 via-sage-500/5 to-sky-500/10" />
         <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full bg-warm-400/10 blur-3xl" />
-        <div className="absolute -bottom-10 -left-10 w-60 h-60 rounded-full bg-sage-400/10 blur-3xl" />
+        <div className="absolute -bottom-10 left-1/4 w-60 h-60 rounded-full bg-sky-400/10 blur-3xl" />
+        <div className="absolute top-20 -left-10 w-60 h-60 rounded-full bg-sage-400/10 blur-3xl" />
 
-        <div className="relative max-w-[1600px] mx-auto px-6 py-8">
+        <div className="relative max-w-[1800px] mx-auto px-6 py-8">
           <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
             <div className="flex items-start gap-4">
               <div className="relative">
                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-warm-500 to-warm-600 flex items-center justify-center shadow-card">
                   <PawPrint size={28} className="text-white" strokeWidth={2} />
                 </div>
-                <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-sage-500 border-2 border-white flex items-center justify-center">
-                  <Heart size={9} className="text-white" fill="white" />
+                <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-sky-500 border-2 border-white flex items-center justify-center">
+                  <TreeDeciduous
+                    size={9}
+                    className="text-white"
+                    strokeWidth={2.5}
+                  />
                 </div>
               </div>
               <div>
@@ -62,7 +71,7 @@ export default function Home() {
             </div>
 
             <div className="flex items-center gap-4 flex-wrap">
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 <StatCard
                   icon={<Target size={15} strokeWidth={2.2} />}
                   label="待诱捕"
@@ -82,11 +91,18 @@ export default function Home() {
                   iconText="text-sage-600"
                 />
                 <StatCard
-                  icon={
-                    <Heart size={15} strokeWidth={2.2} fill="currentColor" />
-                  }
-                  label="绝育率"
-                  value={`${neuterRate}%`}
+                  icon={<TreeDeciduous size={15} strokeWidth={2.2} />}
+                  label="已放归"
+                  value={returnedCount}
+                  bg="bg-sky-500/10"
+                  text="text-sky-700"
+                  iconBg="bg-sky-500/15"
+                  iconText="text-sky-600"
+                />
+                <StatCard
+                  icon={<CheckCircle2 size={15} strokeWidth={2.2} />}
+                  label="完成率"
+                  value={`${tnrRate}%`}
                   bg="bg-warm-500/10"
                   text="text-warm-700"
                   iconBg="bg-warm-500/15"
@@ -123,11 +139,12 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="relative max-w-[1600px] mx-auto px-6 pb-10">
+      <main className="relative max-w-[1800px] mx-auto px-6 pb-10">
         <div className="relative lg:pr-[300px]">
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-6">
             <KanbanColumn status="to_trap" />
             <KanbanColumn status="neutered" />
+            <KanbanColumn status="returned" />
           </div>
 
           <div className="hidden lg:block absolute top-0 right-0 w-[272px]">
@@ -141,26 +158,40 @@ export default function Home() {
                     className="text-warm-500"
                     strokeWidth={2}
                   />
-                  小贴士
+                  TNR流程说明
                 </h3>
-                <ul className="space-y-2 text-[12px] text-earth-700/70 leading-relaxed">
+                <ol className="space-y-2 text-[12px] text-earth-700/70 leading-relaxed">
                   <li className="flex gap-2">
-                    <span className="text-warm-500 mt-0.5">•</span>
-                    <span>拖拽猫咪卡片可以在两栏间切换状态</span>
+                    <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-slate-500/20 text-slate-700 text-[10px] font-bold shrink-0 mt-0.5">
+                      1
+                    </span>
+                    <span>
+                      <strong className="text-slate-700">待诱捕</strong>
+                      ：发现流浪猫，记录信息，准备诱捕
+                    </span>
                   </li>
                   <li className="flex gap-2">
-                    <span className="text-warm-500 mt-0.5">•</span>
-                    <span>点击卡片右上角笔形图标可编辑猫咪信息</span>
+                    <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-sage-500/20 text-sage-700 text-[10px] font-bold shrink-0 mt-0.5">
+                      2
+                    </span>
+                    <span>
+                      <strong className="text-sage-700">已绝育</strong>
+                      ：完成绝育手术，剪耳标，观察恢复
+                    </span>
                   </li>
                   <li className="flex gap-2">
-                    <span className="text-warm-500 mt-0.5">•</span>
-                    <span>点击右上角地图查看所有猫咪发现位置</span>
+                    <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-sky-500/20 text-sky-700 text-[10px] font-bold shrink-0 mt-0.5">
+                      3
+                    </span>
+                    <span>
+                      <strong className="text-sky-700">已放归</strong>
+                      ：放归原发现地，后续跟踪观察
+                    </span>
                   </li>
-                  <li className="flex gap-2">
-                    <span className="text-warm-500 mt-0.5">•</span>
-                    <span>数据自动保存在浏览器本地存储中</span>
-                  </li>
-                </ul>
+                </ol>
+                <div className="mt-3 pt-3 border-t border-cream-200/60 text-[11px] text-earth-700/50 leading-relaxed">
+                  拖拽卡片可以在三步之间流转状态，相关日期会自动记录。
+                </div>
               </div>
             </div>
           </div>

@@ -249,9 +249,13 @@ export default function LocationMap() {
             />
 
             {sortedCats.map((cat) => {
-              const isNeutered = cat.status === "neutered";
               const isActive = activeCat?.id === cat.id;
-              const color = isNeutered ? "#22C55E" : "#F97316";
+              const color =
+                cat.status === "returned"
+                  ? "#0EA5E9"
+                  : cat.status === "neutered"
+                    ? "#22C55E"
+                    : "#F97316";
 
               return (
                 <g
@@ -348,12 +352,18 @@ export default function LocationMap() {
                   </h4>
                   <span
                     className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium ${
-                      activeCat.status === "neutered"
-                        ? "bg-sage-100 text-sage-600"
-                        : "bg-warm-100 text-warm-600"
+                      activeCat.status === "returned"
+                        ? "bg-sky-100 text-sky-600"
+                        : activeCat.status === "neutered"
+                          ? "bg-sage-100 text-sage-600"
+                          : "bg-warm-100 text-warm-600"
                     }`}
                   >
-                    {activeCat.status === "neutered" ? "已绝育" : "待诱捕"}
+                    {activeCat.status === "returned"
+                      ? "已放归"
+                      : activeCat.status === "neutered"
+                        ? "已绝育"
+                        : "待诱捕"}
                   </span>
                 </div>
                 <p className="text-[11px] text-earth-700/60 mt-0.5 flex items-center gap-1">
@@ -435,8 +445,12 @@ export default function LocationMap() {
             opacity="0.4"
           />
           {sortedCats.slice(0, 5).map((cat, i) => {
-            const isNeutered = cat.status === "neutered";
-            const color = isNeutered ? "#22C55E" : "#F97316";
+            const color =
+              cat.status === "returned"
+                ? "#0EA5E9"
+                : cat.status === "neutered"
+                ? "#22C55E"
+                : "#F97316";
             return (
               <g
                 key={cat.id}

@@ -1,7 +1,14 @@
 import { useEffect, useState } from "react";
 import type { CatFormData, CatGender } from "@/types/cat";
 import { FUR_COLOR_OPTIONS, GENDER_LABEL } from "@/types/cat";
-import { X, Cat as CatIcon, Plus, Calendar, MapPin } from "lucide-react";
+import {
+  X,
+  Cat as CatIcon,
+  Plus,
+  MapPin,
+  TreeDeciduous,
+  Scissors,
+} from "lucide-react";
 
 interface AddCatModalProps {
   onClose: () => void;
@@ -15,6 +22,7 @@ export default function AddCatModal({ onClose, onSubmit }: AddCatModalProps) {
     furColor: "橘猫",
     gender: "unknown",
     neuterDate: "",
+    returnDate: "",
     note: "",
     locationName: "",
   });
@@ -171,19 +179,36 @@ export default function AddCatModal({ onClose, onSubmit }: AddCatModalProps) {
             </div>
           </div>
 
-          <div>
-            <label className="block text-xs font-semibold text-earth-700 mb-1.5">
-              <span className="inline-flex items-center gap-1">
-                <Calendar size={11} strokeWidth={2} />
-                绝育日期（如已绝育请填写）
-              </span>
-            </label>
-            <input
-              type="date"
-              value={formData.neuterDate || ""}
-              onChange={(e) => updateField("neuterDate", e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-cream-200 bg-cream-50/50 text-earth-800 focus:outline-none focus:ring-2 focus:ring-warm-500/30 focus:border-warm-500/50 transition-all text-sm"
-            />
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-semibold text-earth-700 mb-1.5">
+                <span className="inline-flex items-center gap-1">
+                  <Scissors size={11} strokeWidth={2} />
+                  绝育日期
+                </span>
+              </label>
+              <input
+                type="date"
+                value={formData.neuterDate || ""}
+                onChange={(e) => updateField("neuterDate", e.target.value)}
+                className="w-full px-3.5 py-2.5 rounded-xl border border-cream-200 bg-cream-50/50 text-earth-800 focus:outline-none focus:ring-2 focus:ring-warm-500/30 focus:border-warm-500/50 transition-all text-sm"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-earth-700 mb-1.5">
+                <span className="inline-flex items-center gap-1">
+                  <TreeDeciduous size={11} strokeWidth={2} />
+                  放归日期
+                </span>
+              </label>
+              <input
+                type="date"
+                value={formData.returnDate || ""}
+                onChange={(e) => updateField("returnDate", e.target.value)}
+                className="w-full px-3.5 py-2.5 rounded-xl border border-cream-200 bg-cream-50/50 text-earth-800 focus:outline-none focus:ring-2 focus:ring-warm-500/30 focus:border-warm-500/50 transition-all text-sm"
+              />
+            </div>
           </div>
 
           <div>

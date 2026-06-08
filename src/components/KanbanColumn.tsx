@@ -1,13 +1,44 @@
 import { useState } from "react";
-import type { Cat, CatStatus } from "@/types/cat";
+import type { CatStatus } from "@/types/cat";
 import { STATUS_LABEL } from "@/types/cat";
 import { useCatStore } from "@/store/catStore";
 import CatCard from "./CatCard";
-import { Cat as CatIcon, Target, Scissors } from "lucide-react";
+import { Cat as CatIcon, Target, Scissors, TreeDeciduous } from "lucide-react";
 
 interface KanbanColumnProps {
   status: CatStatus;
 }
+
+const STATUS_CONFIG: Record<
+  CatStatus,
+  {
+    Icon: typeof Target;
+    headerBg: string;
+    headerText: string;
+    iconBg: string;
+  }
+> = {
+  to_trap: {
+    Icon: Target,
+    headerBg:
+      "bg-gradient-to-r from-slate-500/10 to-slate-400/5 border-slate-400/20",
+    headerText: "text-slate-700",
+    iconBg: "bg-slate-500/15 text-slate-600",
+  },
+  neutered: {
+    Icon: Scissors,
+    headerBg:
+      "bg-gradient-to-r from-sage-500/15 to-sage-400/5 border-sage-400/20",
+    headerText: "text-sage-700",
+    iconBg: "bg-sage-500/15 text-sage-600",
+  },
+  returned: {
+    Icon: TreeDeciduous,
+    headerBg: "bg-gradient-to-r from-sky-500/15 to-sky-400/5 border-sky-400/20",
+    headerText: "text-sky-700",
+    iconBg: "bg-sky-500/15 text-sky-600",
+  },
+};
 
 export default function KanbanColumn({ status }: KanbanColumnProps) {
   const [isOver, setIsOver] = useState(false);
@@ -15,8 +46,8 @@ export default function KanbanColumn({ status }: KanbanColumnProps) {
   const updateCatStatus = useCatStore((s) => s.updateCatStatus);
   const cats = getCatsByStatus(status);
 
-  const isToTrap = status === "to_trap";
-  const Icon = isToTrap ? Target : Scissors;
+  const config = STATUS_CONFIG[status];
+  const { Icon } = config;
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -42,14 +73,6 @@ export default function KanbanColumn({ status }: KanbanColumnProps) {
     }
   };
 
-  const headerBg = isToTrap
-    ? "bg-gradient-to-r from-slate-500/10 to-slate-400/5 border-slate-400/20"
-    : "bg-gradient-to-r from-sage-500/15 to-sage-400/5 border-sage-400/20";
-  const headerText = isToTrap ? "text-slate-700" : "text-sage-700";
-  const iconBg = isToTrap
-    ? "bg-slate-500/15 text-slate-600"
-    : "bg-sage-500/15 text-sage-600";
-
   return (
     <div
       onDragOver={handleDragOver}
@@ -59,16 +82,16 @@ export default function KanbanColumn({ status }: KanbanColumnProps) {
         ${isOver ? "drop-highlight" : "bg-cream-50/60 border border-cream-200/80"}`}
     >
       <div
-        className={`px-5 py-4 border-b ${headerBg} flex items-center justify-between`}
+        className={`px-5 py-4 border-b ${config.headerBg} flex items-center justify-between`}
       >
         <div className="flex items-center gap-3">
           <div
-            className={`w-9 h-9 rounded-xl ${iconBg} flex items-center justify-center`}
+            className={`w-9 h-9 rounded-xl ${config.iconBg} flex items-center justify-center`}
           >
             <Icon size={18} strokeWidth={2} />
           </div>
           <div>
-            <h2 className={`font-serif font-bold text-lg ${headerText}`}>
+            <h2 className={`font-serif font-bold text-lg ${config.headerText}`}>
               {STATUS_LABEL[status]}
             </h2>
             <p className="text-[11px] text-earth-700/40 font-medium">
@@ -77,7 +100,7 @@ export default function KanbanColumn({ status }: KanbanColumnProps) {
           </div>
         </div>
         <div
-          className={`text-2xl font-serif font-bold ${headerText} opacity-40`}
+          className={`text-2xl font-serif font-bold ${config.headerText} opacity-40`}
         >
           {cats.length}
         </div>

@@ -1,5 +1,5 @@
 export type CatGender = "male" | "female" | "unknown";
-export type CatStatus = "to_trap" | "neutered";
+export type CatStatus = "to_trap" | "neutered" | "returned";
 
 export interface CatLocation {
   x: number;
@@ -15,6 +15,7 @@ export interface Cat {
   gender: CatGender;
   status: CatStatus;
   neuterDate?: string;
+  returnDate?: string;
   location: CatLocation;
   note?: string;
   createdAt: string;
@@ -26,6 +27,7 @@ export interface CatFormData {
   furColor: string;
   gender: CatGender;
   neuterDate?: string;
+  returnDate?: string;
   note?: string;
   locationName: string;
 }
@@ -52,4 +54,7 @@ export const GENDER_LABEL: Record<CatGender, string> = {
 export const STATUS_LABEL: Record<CatStatus, string> = {
   to_trap: "待诱捕",
   neutered: "已绝育",
+  returned: "已放归",
 };
+
+export const STATUS_ORDER: CatStatus[] = ["to_trap", "neutered", "returned"];

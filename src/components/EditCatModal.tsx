@@ -2,7 +2,14 @@ import { useEffect, useState } from "react";
 import type { Cat, CatFormData, CatGender } from "@/types/cat";
 import { FUR_COLOR_OPTIONS, GENDER_LABEL } from "@/types/cat";
 import { useCatStore } from "@/store/catStore";
-import { X, Cat as CatIcon, Save, Calendar, MapPin } from "lucide-react";
+import {
+  X,
+  Cat as CatIcon,
+  Save,
+  MapPin,
+  TreeDeciduous,
+  Scissors,
+} from "lucide-react";
 
 interface EditCatModalProps {
   cat: Cat;
@@ -19,6 +26,7 @@ export default function EditCatModal({ cat, onClose }: EditCatModalProps) {
     furColor: cat.furColor,
     gender: cat.gender,
     neuterDate: cat.neuterDate || "",
+    returnDate: cat.returnDate || "",
     note: cat.note || "",
     locationName: cat.location.name,
   });
@@ -176,28 +184,54 @@ export default function EditCatModal({ cat, onClose }: EditCatModalProps) {
             </div>
           </div>
 
-          <div>
-            <label className="block text-xs font-semibold text-earth-700 mb-1.5">
-              <span className="inline-flex items-center gap-1">
-                <Calendar size={11} strokeWidth={2} />
-                绝育日期
-              </span>
-            </label>
-            <input
-              type="date"
-              value={formData.neuterDate || ""}
-              onChange={(e) => updateField("neuterDate", e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-xl border border-cream-200 bg-cream-50/50 text-earth-800 focus:outline-none focus:ring-2 focus:ring-warm-500/30 focus:border-warm-500/50 transition-all text-sm"
-            />
-            {formData.neuterDate && (
-              <button
-                type="button"
-                onClick={() => updateField("neuterDate", "")}
-                className="mt-1.5 text-[11px] text-earth-700/50 hover:text-warm-600 underline underline-offset-2"
-              >
-                清除日期
-              </button>
-            )}
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-semibold text-earth-700 mb-1.5">
+                <span className="inline-flex items-center gap-1">
+                  <Scissors size={11} strokeWidth={2} />
+                  绝育日期
+                </span>
+              </label>
+              <input
+                type="date"
+                value={formData.neuterDate || ""}
+                onChange={(e) => updateField("neuterDate", e.target.value)}
+                className="w-full px-3.5 py-2.5 rounded-xl border border-cream-200 bg-cream-50/50 text-earth-800 focus:outline-none focus:ring-2 focus:ring-warm-500/30 focus:border-warm-500/50 transition-all text-sm"
+              />
+              {formData.neuterDate && (
+                <button
+                  type="button"
+                  onClick={() => updateField("neuterDate", "")}
+                  className="mt-1.5 text-[11px] text-earth-700/50 hover:text-warm-600 underline underline-offset-2"
+                >
+                  清除
+                </button>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-earth-700 mb-1.5">
+                <span className="inline-flex items-center gap-1">
+                  <TreeDeciduous size={11} strokeWidth={2} />
+                  放归日期
+                </span>
+              </label>
+              <input
+                type="date"
+                value={formData.returnDate || ""}
+                onChange={(e) => updateField("returnDate", e.target.value)}
+                className="w-full px-3.5 py-2.5 rounded-xl border border-cream-200 bg-cream-50/50 text-earth-800 focus:outline-none focus:ring-2 focus:ring-warm-500/30 focus:border-warm-500/50 transition-all text-sm"
+              />
+              {formData.returnDate && (
+                <button
+                  type="button"
+                  onClick={() => updateField("returnDate", "")}
+                  className="mt-1.5 text-[11px] text-earth-700/50 hover:text-warm-600 underline underline-offset-2"
+                >
+                  清除
+                </button>
+              )}
+            </div>
           </div>
 
           <div>

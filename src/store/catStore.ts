@@ -35,6 +35,7 @@ export const useCatStore = create<CatStore>()(
           gender: data.gender,
           status: "to_trap",
           neuterDate: undefined,
+          returnDate: undefined,
           location: {
             x: 10 + Math.random() * 80,
             y: 10 + Math.random() * 80,
@@ -59,6 +60,9 @@ export const useCatStore = create<CatStore>()(
                   ...(data.neuterDate !== undefined && {
                     neuterDate: data.neuterDate || undefined,
                   }),
+                  ...(data.returnDate !== undefined && {
+                    returnDate: data.returnDate || undefined,
+                  }),
                   ...(data.note !== undefined && { note: data.note }),
                   ...(data.locationName && {
                     location: { ...cat.location, name: data.locationName },
@@ -71,18 +75,20 @@ export const useCatStore = create<CatStore>()(
 
       updateCatStatus: (id, status) => {
         set((state) => ({
-          cats: state.cats.map((cat) =>
-            cat.id === id
-              ? {
-                  ...cat,
-                  status,
-                  neuterDate:
-                    status === "neutered"
-                      ? cat.neuterDate || new Date().toISOString().slice(0, 10)
-                      : undefined,
-                }
-              : cat,
-          ),
+          cats: state.cats.map((cat) => {
+            if (cat.id !== id) return cat;
+            const today = new Date().toISOString().slice(0, 10);
+            return {
+              ...cat,
+              status,
+              neuterDate:
+                status === "neutered" || status === "returned"
+                  ? cat.neuterDate || today
+                  : undefined,
+              returnDate:
+                status === "returned" ? cat.returnDate || today : undefined,
+            };
+          }),
         }));
       },
 

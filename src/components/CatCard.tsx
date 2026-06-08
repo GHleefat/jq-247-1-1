@@ -10,6 +10,7 @@ import {
   MapPin,
   Pencil,
   GripVertical,
+  TreeDeciduous,
 } from "lucide-react";
 
 interface CatCardProps {
@@ -91,6 +92,12 @@ export default function CatCard({ cat, index }: CatCardProps) {
             已绝育
           </div>
         )}
+        {cat.status === "returned" && (
+          <div className="absolute bottom-2 left-2 bg-sky-500 text-white text-[11px] font-medium px-2 py-0.5 rounded-full flex items-center gap-1 shadow-soft">
+            <TreeDeciduous size={11} strokeWidth={2.5} />
+            已放归
+          </div>
+        )}
       </div>
 
       <div className="p-3 space-y-2">
@@ -112,8 +119,14 @@ export default function CatCard({ cat, index }: CatCardProps) {
           </span>
           {cat.neuterDate && (
             <span className="inline-flex items-center gap-0.5 text-[11px] bg-sage-50 text-sage-600 px-2 py-0.5 rounded-full font-medium">
-              <Calendar size={10} strokeWidth={2.5} />
+              <CatIcon size={10} strokeWidth={2.5} />
               {cat.neuterDate}
+            </span>
+          )}
+          {cat.returnDate && (
+            <span className="inline-flex items-center gap-0.5 text-[11px] bg-sky-50 text-sky-600 px-2 py-0.5 rounded-full font-medium">
+              <TreeDeciduous size={10} strokeWidth={2.5} />
+              {cat.returnDate}
             </span>
           )}
         </div>
