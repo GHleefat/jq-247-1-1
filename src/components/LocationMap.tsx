@@ -331,6 +331,10 @@ export default function LocationMap() {
               <span className="w-2.5 h-2.5 rounded-full bg-sage-500" />
               <span className="text-earth-700/70">已绝育</span>
             </div>
+            <div className="flex items-center gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-sky-500" />
+              <span className="text-earth-700/70">已放归</span>
+            </div>
           </div>
         </div>
 
@@ -449,8 +453,8 @@ export default function LocationMap() {
               cat.status === "returned"
                 ? "#0EA5E9"
                 : cat.status === "neutered"
-                ? "#22C55E"
-                : "#F97316";
+                  ? "#22C55E"
+                  : "#F97316";
             return (
               <g
                 key={cat.id}
